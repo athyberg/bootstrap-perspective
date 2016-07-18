@@ -1,0 +1,239 @@
+html, body, .perspective, .perspective > .slot, .slot-split > dd, .view { 
+    height: 100% 
+}
+@media (min-width: 768px) {
+    body {
+        padding-top: 65px;
+    }
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        border-radius: 0;
+        border-width: 0 0 1px;
+        z-index: 1030;
+    }
+}
+.navbar {
+    margin-bottom: 0
+}
+a {
+  -webkit-user-select: none; /* disable selection/Copy of UIWebView */
+  -webkit-touch-callout: none; /* disable the IOS popup when long-press on a link */
+}
+dl, dt, dl {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.slot-split-horizontal .slot {
+}
+.slot-split {
+    border: 0;
+}
+.slot > dt:not(.draghandle), dd > .view {
+    display: none;
+}
+.slot > dd {
+    position: relative; top: 0; bottom: 0; left: 0; right: 0;
+    overflow: hidden;
+}
+@media (min-width: 768px) {
+    .slot > dd {
+        position: absolute; top: 0; bottom: 0; left: 0; right: 0;
+    }
+}
+.slot.footer {
+    margin: 0 -15px -15px;
+}
+@media (min-width: 768px) {
+    .slot-split > dd {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+        -webkit-box-pack: start;
+            -ms-flex-pack: start;
+                justify-content: flex-start;
+    }
+    .slot-split-vertical > dd {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+                flex-direction: column;
+    }
+    .slot-split-horizontal > dd {
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+                flex-direction: row;
+    }
+    .slot {
+        position: relative;
+        -webkit-box-flex: 1;
+            -ms-flex: 1 1 auto;
+                flex: 1 1 auto;
+    } 
+}
+.perspective {
+    position: relative;
+}
+.view {
+    display: block;
+    padding: 15px;
+    overflow: auto;
+}
+.slot-tab ul.nav-tabs {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 57px; padding: 15px 0 0; margin: 0 15px;
+    z-index: 1;
+}
+dd > .content {
+    height: 100%;
+    overflow: hidden;
+}
+.slot-tab .tab-content {
+    position: relative;
+    padding-top: 57px; 
+}
+.slot.scroll > dd > .content > .view {
+    overflow: auto;
+}
+.slot.scroll-horizontal > dd > .content > .view {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+.slot.scroll-vertical > dd > .content > .view {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* --- DRAG n DROP --- */
+@media (min-width: 768px) {
+    .draghandle {
+        position: absolute; 
+        z-index: 1;
+    }
+    .slot-split-horizontal > dd > .slot > .draghandle {
+        cursor: ew-resize;
+        top: 0; bottom: 0; left: -10px; width: 20px;
+    }
+    .slot-split-vertical > dd > .slot > .draghandle {
+        cursor: ns-resize;
+        left: 0; right: 0; top: -10px; height: 20px;
+    }
+    .draghandle:after {
+        position: absolute;
+        content: "";
+        z-index: -1;
+        border: solid rgba(0, 0, 0, 0.2);
+    }
+    .draghandle:hover:after {
+        border-color: #337ab7;
+        box-shadow: 0 0 10px;
+    }
+    .slot-split-horizontal > dd > .slot > .draghandle:after {
+        top: 0; bottom: 0; left: 50%;
+        border-width: 0 0 0 1px;
+    }
+    .slot-split-vertical > dd > .slot > .draghandle:after {
+        left: 0; right: 0; top: 50%;
+        border-width: 1px 0 0 0;
+    }
+}
+#perspective-drag-widget {
+    position: absolute; top: 0; bottom: 0; left: 0; right: 0;
+}
+.dialog {
+    position: absolute !important;
+    top: 0; left: -9999px; 
+    max-width: 85%;
+    min-height: 100px; 
+    z-index: 10;
+    -webkit-transition: opacity 500ms;
+            transition: opacity 500ms;
+}
+.dialog:before {
+    content: "";
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: black;
+    opacity: 0.2;
+    z-index: -1;
+}
+@media (min-width: 768px) {
+    .dialog:before {
+        display: none;
+    }
+}
+.dialog-title {
+    margin: 0;
+    line-height: 1.42857143;
+    white-space: nowrap;
+    padding-right: 25px;
+}
+.panel-dialog {
+    height: 100%;
+} 
+.panel-dialog > .panel {
+    margin-bottom: 0;
+    border: 1px solid #ccc;
+    -webkit-transition: box-shadow 100ms;
+            transition: box-shadow 100ms;
+    -webkit-transition-timing-function: ease-in;
+            transition-timing-function: ease-in;
+    height: 100%;
+}
+.panel-dialog .panel-heading {
+    border-bottom-color: #ddd;
+    cursor: move;
+}
+.panel-dialog .panel-body {
+    height: calc(100% - 46px);
+}
+.panel-footer {
+    text-align: right;
+    margin: 15px -15px -15px;
+    height: 59px;
+}
+.panel-body > .view {
+    padding: 0;
+}
+.slot:not(.slot-split).over {
+    border: 1px dashed black;
+}
+li > button.close {
+    float: none;
+    position: absolute; top: -3px; right: 4px;
+    display: none;
+    z-index: 1;
+}
+li:hover > button.close {
+    display: inherit;
+}
+.dialog.raised .panel-dialog > .panel {
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+.dialog.raised.ui-draggable-dragging .panel-dialog > .panel {
+    box-shadow: none;
+}
+.slot-tray > dd, .slot-split > dd {
+    overflow: visible;
+}
+.contextmenu {
+    position: absolute;
+    z-index: 10;
+}
+.contextmenu button {
+    margin: 0 2px;
+}
+.accepting {
+    border: 1px dashed #ccc;
+}
+.accepting-hover {
+    background-color: #eee;
+}

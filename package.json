@@ -1,0 +1,30 @@
+{
+  "name": "bootstrap-perspective",
+  "version": "1.0.0",
+  "description": "Simple Bootstrap plugin that adds pespectives to your web application.",
+  "main": "bootstrap-perspective.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://bitbucket.org/anders_thyberg/bootapp.git"
+  },
+  "keywords": [
+    "Bootstrap",
+    "Perspective",
+    "Application"
+  ],
+  "author": "Anders Thyberg",
+  "license": "MIT",
+  "homepage": "https://bitbucket.org/anders_thyberg/bootapp#readme",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-uglify": "^1.0.1"
+  }
+}

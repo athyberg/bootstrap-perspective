@@ -1,0 +1,29 @@
+{
+  "name": "bootstrap-perspective",
+  "main": "bootapp.js",
+  "description": "Bootstrap plugin that adds perspectives to your web application",
+  "keywords": [
+    "Bootstrap",
+    "Perspective",
+    "Application",
+    "Desktop",
+    "Responsive"
+  ],
+  "authors": [
+    "Anders Thyberg (https://github.com/athyberg)"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/athyberg/bootstrap-perspective",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "jquery-ui": "^1.11.4"
+  }
+}
