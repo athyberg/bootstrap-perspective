@@ -34,7 +34,7 @@ module.exports = function(grunt) {
           expand: true,
           flatten: true,
           cwd: '.',
-          src: ['src/bootstrap-perspective.js', 'src/bootstrap-perspective.css', 'LICENSE', 'README.md'],
+          src: ['src/bootstrap-perspective.js', 'src/bootstrap-perspective.css', 'LICENSE'],
           dest: 'dist/'
         },
         {
