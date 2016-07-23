@@ -195,7 +195,6 @@ Plain HTML example
 **[Basic demo built with AngularJS](http://bootapp.moobin.se)**
 
 
-
 ## Requirements ##
 - Bootstrap 3
 - jQuery
