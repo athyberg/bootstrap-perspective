@@ -2,10 +2,10 @@ html, body, .perspective, .perspective > .slot, .slot-split > dd, .view {
     height: 100% 
 }
 @media (min-width: 768px) {
-    body {
+    html:not([mobile]) body {
         padding-top: 65px;
     }
-    .navbar {
+    html:not([mobile]) .navbar {
         position: fixed;
         top: 0;
         left: 0;
@@ -39,7 +39,7 @@ dl, dt, dl {
     overflow: hidden;
 }
 @media (min-width: 768px) {
-    .slot > dd {
+    html:not([mobile]) .slot > dd {
         position: absolute; top: 0; bottom: 0; left: 0; right: 0;
     }
 }
@@ -47,18 +47,18 @@ dl, dt, dl {
     margin: 0 -15px -15px;
 }
 @media (min-width: 768px) {
-    .slot-split > dd {
+    html:not([mobile]) .slot-split > dd {
         display: flex;
         flex-wrap: nowrap;
         justify-content: flex-start;
     }
-    .slot-split-vertical > dd {
+    html:not([mobile]) .slot-split-vertical > dd {
         flex-direction: column;
     }
-    .slot-split-horizontal > dd {
+    html:not([mobile]) .slot-split-horizontal > dd {
         flex-direction: row;
     }
-    .slot {
+    html:not([mobile]) .slot {
         position: relative;
         flex: 1 1 auto;
     } 
@@ -98,33 +98,33 @@ dd > .content {
 
 /* --- DRAG n DROP --- */
 @media (min-width: 768px) {
-    .draghandle {
+    html:not([mobile]) .draghandle {
         position: absolute; 
         z-index: 1;
     }
-    .slot-split-horizontal > dd > .slot > .draghandle {
+    html:not([mobile]) .slot-split-horizontal > dd > .slot > .draghandle {
         cursor: ew-resize;
         top: 0; bottom: 0; left: -10px; width: 20px;
     }
-    .slot-split-vertical > dd > .slot > .draghandle {
+    html:not([mobile]) .slot-split-vertical > dd > .slot > .draghandle {
         cursor: ns-resize;
         left: 0; right: 0; top: -10px; height: 20px;
     }
-    .draghandle:after {
+    html:not([mobile]) .draghandle:after {
         position: absolute;
         content: "";
         z-index: -1;
         border: solid rgba(0, 0, 0, 0.2);
     }
-    .draghandle:hover:after {
+    html:not([mobile]) .draghandle:hover:after {
         border-color: #337ab7;
         box-shadow: 0 0 10px;
     }
-    .slot-split-horizontal > dd > .slot > .draghandle:after {
+    html:not([mobile]) .slot-split-horizontal > dd > .slot > .draghandle:after {
         top: 0; bottom: 0; left: 50%;
         border-width: 0 0 0 1px;
     }
-    .slot-split-vertical > dd > .slot > .draghandle:after {
+    html:not([mobile]) .slot-split-vertical > dd > .slot > .draghandle:after {
         left: 0; right: 0; top: 50%;
         border-width: 1px 0 0 0;
     }
@@ -152,7 +152,7 @@ dd > .content {
     z-index: -1;
 }
 @media (min-width: 768px) {
-    .dialog:before {
+    html:not([mobile]) .dialog:before {
         display: none;
     }
 }

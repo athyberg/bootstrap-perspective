@@ -1,7 +1,7 @@
 /**
 The MIT License (MIT)
 
-Copyright (c) 2016 Anders Thyberg (anders.thyberg@gmail.com)
+Copyright (c) 2016 Anders Thyberg (github.com/athyberg)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -31,17 +31,23 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     } 
 
     var $tabSlots, $ctxMenu;
-    var dis = this;
     $(window).on('resize', function() {
+      $perspective.setOrientation();
       $('dd').each(function() {
-        dis.viewResize($(this));
+        $perspective.viewResize($(this));
       });        
     });
 
     this.layout();
   };
 
-  Perspective.prototype.layout = function() {  
+  Perspective.prototype.layout = function() {
+
+    this.setOrientation();
+    if (this.isMobile()) {
+      $(':root').attr('mobile');
+    }
+
     // adding 'single-content' to single slots
     $('.slot-single > dd').prepend('<div class="content single-content">');
     $('.slot-single > dd > .single-content').each(function() {
@@ -185,6 +191,21 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     dd.find('.view').trigger('view-resize', [ dd.outerHeight() - tabHeight, dd.outerWidth() ]);
   };
 
+  Perspective.prototype.appendView = function(view) {
+    $(view).appendTo('body');
+    view.focus();
+  };
+
+  Perspective.prototype.setOrientation = function() {
+    $('.perspective').attr('orientation', window.innerHeight > window.innerWidth ? 'portrait' : 'landscape');
+  };
+
+  Perspective.prototype.isMobile = function() {
+    var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
+    isMobile = isMobile || /iPhone|iPad|iPod/i.test(navigator.platform);
+    isMobile = isMobile || (typeof window.orientation !== 'undefined');
+    return isMobile;
+  };
 
   // -------------------------------------------------------------------
   // HANDLE SLOT SPLIT DRAG AND RESIZE
@@ -267,11 +288,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   // UTILS / PLUGINS
   // -------------------------------------------------------------------
 
-  $.fn.appendView = function() {
-    $(this).appendTo('body');
-    this.focus();
-  };
-
   var $dialogCnt = 1000;
   $.fn.dialog = function(top, left) {
     var view = $(this);
@@ -292,12 +308,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     
     // focus
     panel.on('mousedown', function() {
-      panel.appendView();
+      $perspective.appendView(panel);
     });
     
     panel.draggable({
       start: function() {
-        panel.appendView();
+        $perspective.appendView(panel);
       },
       opacity: 0.75,
       handle: '.panel-heading',
@@ -306,7 +322,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
     $dialogCnt++;
     
-    view.trigger('view-resize', [ view.height() ]);
+    view.trigger('view-resize', [ view.height(), view.width() ]);
 
     return panel;
   };
@@ -316,7 +332,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
     dialog.css('top', 0);
     dialog.css('left', -9999);
-    dialog.appendView();
+    
+    $perspective.appendView(dialog);
     
     var wh = $(window).height();
     var height = dialog.height() * 100 / wh;
@@ -347,7 +364,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     
     tab.on('contextmenu', function(event) {
       // no context menus on mobile devices
-      if (typeof window.orientation !== 'undefined') {
+      if ($perspective.isMobile()) {
         return;
       }
       event.preventDefault();
@@ -355,7 +372,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       var d = $('<button type="button" class="btn btn-default btn-lg" aria-label="Detach"><span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></button>');
       $ctxMenu.children().remove();
       $ctxMenu.append(d).append(c);
-      $ctxMenu.css({ top: event.pageY + 'px', left: event.pageX + 'px', display: 'inline-block' }).appendView();
+      $ctxMenu.css({ top: event.pageY + 'px', left: event.pageX + 'px', display: 'inline-block' });
+      $perspective.appendView($ctxMenu);
 
       // NOTE! It is up to the 'view' to decide what should happen to the tab when it is closed or detached
       c.on('click', function(event) {

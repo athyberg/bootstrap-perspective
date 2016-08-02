@@ -44,6 +44,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   Perspective.prototype.layout = function() {
 
     this.setOrientation();
+    if (this.isMobile()) {
+      $(':root').attr('mobile');
+    }
 
     // adding 'single-content' to single slots
     $('.slot-single > dd').prepend('<div class="content single-content">');
