@@ -87,43 +87,56 @@ Any web desktop application needs dialogs. This plugin provides a kind of dialog
 
 	var view = $('<div class="view" id="hello" name="Hello">Hello World!</div>');
 	// you need to register event handlers for your view (see Events)
-	view.dialog().showView();
+	view.showView(); // view.dialog().showView();
 
 The showView() function can be called without any parameters. Then the dialog will be placed in the center of the perspective, but you can also provide a Top and a Left argument (.showView(top, left)) to place the dialogs top left corner wherever you want.
 
 ## Views ##
-Views are ...
+You can consider views to be what the `container` is for Bootstrap. The basic thought is to add a new view to the perspective as a dialog and then the user can attach the dialog to a slot by draging it ontop of a tab-slot.
+
+    var view = $('<div class="view" id="hello" name="Hello">Hello World!</div>');
+    // you need to register event handlers for your view (see Events)
+    view.showView(); // adds the view to the specified slot or as a dialog if
+                     // no slot want's it...
+
+A good practice is to let your view widget fill up the view pane and allow it to scroll it's content. If e.g. the view content is a table you should let the view fill the whole of the available area and let the parts of the table that doesn't fit be accessable by scrolling. 
 
 ## Events ##
-There are six events that are triggered from this plugin. Remember that it is always up to the application to decide what will happen whenever these events are triggered, there is no default behavior:
+There are five events that are triggered from this plugin. Remember that it is always up to the application to decide what will happen whenever these events are triggered, this plug-in does not provide any default behavior:
 
-### tab-close ###
-Triggered when the user tries to close a tab. 
+### view-close(event, container) ###
+Triggered when the user tries to close a view. This can be done by closing a tab or a dialog. 
+- **event** The event.
+- **container** The container attribute is a reference to the view-container i.e. the tab or dialog. 
+
 Here is an example on how to use this event:
  
-	$(view).on('tab-close', function( event, tab ) {
+	$(view).on('view-close', function( event, container ) {
 	    if (confirm('Are you sure?')) {
-	        tab.remove();
-	        $(view).remove(); 
+            $(view).remove(); 
+	        container.remove();
 	    }
 	});                
 
-### tab-detach ###
-Triggered whenever a user tries to detach a tab from it's slot.
+### view-detach ###
+Triggered whenever a user tries to detach a view from a tab slot. The container attribute is a reference to the detatched tab.
 Here is an example on how to use this event:
  
-	$(view).on('tab-detach', function( event, tab, top, left ) { 
-	    tab.remove();
+	$(view).on('view-detach', function( event, container, top, left ) { 
+	    container.remove();
 	    $(view).dialog().show(top, left); 
 	});
 
-### tab-attach ###
-Triggered whenever a user tries to attach a dialog to a tab slot. 
+### view-attach ###
+Triggered whenever a user tries to attach a view (i.e. dialog) to a tab slot. 
 
 ### view-resize ###
 Triggered whenever a view is resized. This is in its turn triggered by a window resize or the user resizing slots in the application. 
 
-### dialog-close ###
+### view-active ###
+Triggered when a view becomes 'the active view', e.g. when a dialog is brought on top or whenever a tab is selected.
+
+### dialog-close (deprecated) ###
 Triggered when the user tries to close a dialog. Here is an example on how to use this event: 
 
 	$(view).on('dialog-close', function( event, dialog ) {
@@ -175,6 +188,7 @@ Plain HTML example
                                 <dd>
                                     <div class="view active" id="userSessions" name="User Sessions">...</div>
                                     <div class="view" id="logs" name="Logs">...</div>
+                                    <div class="view hidden" id-starts-with="logs">...</div>
                                 </dd>
                             </dl>
                         </dd>
