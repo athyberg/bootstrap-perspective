@@ -87,16 +87,16 @@ Any web desktop application needs dialogs. This plugin provides a kind of dialog
 
 	var view = $('<div class="view" id="hello" name="Hello">Hello World!</div>');
 	// you need to register event handlers for your view (see Events)
-	view.showView(); // view.dialog().showView();
+	view.asDialog();
 
-The showView() function can be called without any parameters. Then the dialog will be placed in the center of the perspective, but you can also provide a Top and a Left argument (.showView(top, left)) to place the dialogs top left corner wherever you want.
+The asDialog() function can be called without any parameters. Then the dialog will be placed in the center of the perspective, but you can also provide a Top and a Left argument (.asDialog(top, left)) to place the dialogs top left corner wherever you want.
 
 ## Views ##
 You can consider views to be what the `container` is for Bootstrap. The basic thought is to add a new view to the perspective as a dialog and then the user can attach the dialog to a slot by draging it ontop of a tab-slot.
 
     var view = $('<div class="view" id="hello" name="Hello">Hello World!</div>');
     // you need to register event handlers for your view (see Events)
-    view.showView(); // adds the view to the specified slot or as a dialog if
+    view.asDialog(); // adds the view to the specified slot or as a dialog if
                      // no slot want's it...
 
 A good practice is to let your view widget fill up the view pane and allow it to scroll it's content. If e.g. the view content is a table you should let the view fill the whole of the available area and let the parts of the table that doesn't fit be accessable by scrolling. 
