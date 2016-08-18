@@ -207,6 +207,26 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     return isMobile;
   };
 
+
+  Perspective.prototype.showDialog = function(dialog, top, left) {
+    dialog.css('top', 0);
+    dialog.css('left', -9999);
+    
+    $perspective.appendView(dialog);
+    
+    var wh = $(window).height();
+    var height = dialog.height() * 100 / wh;
+    if (height > 100) {
+      height = wh * 0.85;
+      dialog.css('height', height);
+    }
+
+    dialog.css('top', top || ($(window).height() - dialog.height()) / 2);
+    dialog.css('left', left || ($(window).width() - dialog.width()) / 2);
+    dialog.addClass('raised');
+  };
+
+
   // -------------------------------------------------------------------
   // HANDLE SLOT SPLIT DRAG AND RESIZE
   // -------------------------------------------------------------------
@@ -289,7 +309,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   // -------------------------------------------------------------------
 
   var $dialogCnt = 1000;
-  $.fn.dialog = function(top, left) {
+  $.fn.asDialog = function(top, left) {
     var view = $(this);
     var panel = $(
       '<div id="dialog-"' + $dialogCnt + '" class="dialog" tabindex="-1" role="dialog"><div class="panel-dialog">' +
@@ -303,12 +323,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
     // close (default function for dialog)
     heading.find('.close').on('mousedown', function() {
-      view.trigger('dialog-close', [ panel ]);
+      view.trigger('view-close', [ panel ]);
     });
     
     // focus
     panel.on('mousedown', function() {
       $perspective.appendView(panel);
+      view.trigger('view-active', [ panel ]);
     });
     
     panel.draggable({
@@ -324,28 +345,31 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     
     view.trigger('view-resize', [ view.height(), view.width() ]);
 
+    panel.type = 'dialog';
+
+    $perspective.showDialog(panel, top, left);
     return panel;
   };
 
-  $.fn.showView = function(top, left) {
-    var dialog = $(this);
+//  $.fn.showView = function(top, left) {
+//    var dialog = $(this);
 
-    dialog.css('top', 0);
-    dialog.css('left', -9999);
+//    dialog.css('top', 0);
+//    dialog.css('left', -9999);
     
-    $perspective.appendView(dialog);
+//    $perspective.appendView(dialog);
     
-    var wh = $(window).height();
-    var height = dialog.height() * 100 / wh;
-    if (height > 100) {
-      height = wh * 0.85;
-      dialog.css('height', height);
-    }
+//    var wh = $(window).height();
+//    var height = dialog.height() * 100 / wh;
+//    if (height > 100) {
+//      height = wh * 0.85;
+//      dialog.css('height', height);
+//    }
 
-    dialog.css('top', top || ($(window).height() - dialog.height()) / 2);
-    dialog.css('left', left || ($(window).width() - dialog.width()) / 2);
-    dialog.addClass('raised');
-  };
+//    dialog.css('top', top || ($(window).height() - dialog.height()) / 2);
+//    dialog.css('left', left || ($(window).width() - dialog.width()) / 2);
+//    dialog.addClass('raised');
+//  };
 
   $.fn.asTab = function(tabContainer) {
     var view = $(this);
@@ -377,16 +401,20 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
       // NOTE! It is up to the 'view' to decide what should happen to the tab when it is closed or detached
       c.on('click', function(event) {
-        view.trigger('tab-close', [ tab, event.pageY, event.pageX ]);
+        view.trigger('view-close', [ tab, event.pageY, event.pageX ]);
       })  ;
       d.on('click', function(event) {
-        view.trigger('tab-detach', [ tab, event.pageY, event.pageX ]);
+        view.trigger('view-detach', [ tab, event.pageY, event.pageX ]);
       });
+      
+      // TODO move to init...
       $(document).on('click', function(event) {
         $ctxMenu.css({ display: 'none' });
         $ctxMenu.children().remove();
       });
     });
+
+    tab.type = 'tab';
   };
 
   var $perspective = new Perspective();

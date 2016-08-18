@@ -52,6 +52,7 @@ app.directive('viewTable', function() {
     };
 });
 
+// Add this as a utility function to the perspective
 function nextActiveTab(tab) {
     var active = $(tab).prev('li:not(.dropdown-tabs)');
     if (active.length == 0) {
@@ -63,25 +64,38 @@ function nextActiveTab(tab) {
 }
 
 function registerEventHandler(view) {
-    $(view).on('tab-close', function( event, tab ) {
+    $(view).on('view-close', function( event, container ) {
         if (confirm('Are you sure?')) {
-            nextActiveTab(tab);
-            tab.remove();
+            if (container.type === 'tab') {
+                nextActiveTab(container);
+            }
             $(view).remove(); 
+            container.remove();                
         }
     });                
-    $(view).on('tab-detach', function( event, tab, x, y ) { 
-        nextActiveTab(tab);
-        tab.remove();
-        $(view).dialog().showView(x, y); 
+    $(view).on('view-detach', function( event, container, x, y ) { 
+        if (container.type === 'tab') {
+            nextActiveTab(container);
+            container.remove();
+        } 
+        $(view).asDialog(x, y);
     });
-    $(view).on('tab-attach', function( event, slotContent ) { });
+    $(view).on('view-attach', function( event, slotContent ) { 
+        console.log('View Attach Event: ' + this.id);
+        console.log(container);
+    });
+    $(view).on('view-active', function( event, container ) { 
+        console.log('View Active Event: ' + this.id);
+        console.log(container);
+    });
     $(view).on('view-resize', function( event, height, width ) {
-        console.log('View Resize event: ' + this.id + " Height=" + height + " Width=" + width);
+        console.log('View Resize Event: ' + this.id + " Height=" + height + " Width=" + width);
     });
-    $(view).on('dialog-close', function( event, dialog ) {
-        $(dialog).remove();
-    });
+    // deprecated ---
+    // $(view).on('dialog-close', function( event, dialog ) {
+    //    $(dialog).remove();
+    // });
+    // --- deprecated
 }
 
 window.onload = function() {
@@ -96,6 +110,6 @@ window.onload = function() {
 function showAbout() {
     var view = $('<div class="view" id="about" name="About..."><h4>Bootstrap Perspective</h4><i>A small Bootstrap plugin that brings perspectives to your web application.</i></div>');
     registerEventHandler(view);
-    view.dialog().showView();
+    view.asDialog();
     return false;
 }
