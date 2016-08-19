@@ -207,6 +207,21 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     return isMobile;
   };
 
+  Perspective.prototype.getTop = function(container, top) {
+    if (typeof top !== 'undefined') {
+      var ofs = $(window).height() - top - container.height(); 
+      return ofs < 0 ? top + ofs : top;
+    }
+    return top;
+  };
+
+  Perspective.prototype.getLeft = function(container, left) {
+    if (typeof left !== 'undefined') {
+      var ofs = $(window).width() - left - container.width(); 
+      return ofs < 0 ? left + ofs : left;
+    }
+    return left;
+  };
 
   Perspective.prototype.showDialog = function(dialog, top, left) {
     dialog.css('top', 0);
@@ -221,8 +236,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       dialog.css('height', height);
     }
 
-    dialog.css('top', top || ($(window).height() - dialog.height()) / 2);
-    dialog.css('left', left || ($(window).width() - dialog.width()) / 2);
+    dialog.css('top', $perspective.getTop(dialog, top) || ($(window).height() - dialog.height()) / 2);
+    dialog.css('left', $perspective.getLeft(dialog, left) || ($(window).width() - dialog.width()) / 2);
     dialog.addClass('raised');
   };
 
@@ -351,26 +366,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     return panel;
   };
 
-//  $.fn.showView = function(top, left) {
-//    var dialog = $(this);
-
-//    dialog.css('top', 0);
-//    dialog.css('left', -9999);
-    
-//    $perspective.appendView(dialog);
-    
-//    var wh = $(window).height();
-//    var height = dialog.height() * 100 / wh;
-//    if (height > 100) {
-//      height = wh * 0.85;
-//      dialog.css('height', height);
-//    }
-
-//    dialog.css('top', top || ($(window).height() - dialog.height()) / 2);
-//    dialog.css('left', left || ($(window).width() - dialog.width()) / 2);
-//    dialog.addClass('raised');
-//  };
-
   $.fn.asTab = function(tabContainer) {
     var view = $(this);
     var $active = view.hasClass('active') ? 'active' : '',
@@ -396,7 +391,11 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       var d = $('<button type="button" class="btn btn-default btn-lg" aria-label="Detach"><span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></button>');
       $ctxMenu.children().remove();
       $ctxMenu.append(d).append(c);
-      $ctxMenu.css({ top: event.pageY + 'px', left: event.pageX + 'px', display: 'inline-block' });
+
+      var t = $perspective.getTop($ctxMenu, event.pageY);
+      var l = $perspective.getLeft($ctxMenu, event.pageX);
+
+      $ctxMenu.css({ top: t + 'px', left: l + 'px', display: 'inline-block' });
       $perspective.appendView($ctxMenu);
 
       // NOTE! It is up to the 'view' to decide what should happen to the tab when it is closed or detached
