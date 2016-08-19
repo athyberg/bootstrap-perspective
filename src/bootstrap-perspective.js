@@ -138,7 +138,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         view.asTab($(this));
 
         slotContent.append(view);
-        view.trigger('tab-attach', [ slotContent ]);
+        view.trigger('view-attach', [ slotContent ]);
 
         $tabSlots.filter('.over[fade]').find('.view').addClass('fade');
         $tabSlots.filter('.over[fade]').find('.view.active').addClass('in');

@@ -82,7 +82,7 @@ function registerEventHandler(view) {
     });
     $(view).on('view-attach', function( event, slotContent ) { 
         console.log('View Attach Event: ' + this.id);
-        console.log(container);
+        console.log(slotContent);
     });
     $(view).on('view-active', function( event, container ) { 
         console.log('View Active Event: ' + this.id);
