@@ -96,7 +96,7 @@ You can consider views to be what the `container` is for Bootstrap. The basic th
 
     var view = $('<div class="view" id="hello" name="Hello">Hello World!</div>');
     // you need to register event handlers for your view (see Events)
-    view.asDialog(); // adds the view to the specified slot or as a dialog if
+    view.openView(); // adds the view to the specified slot or as a dialog if
                      // no slot want's it...
 
 A good practice is to let your view widget fill up the view pane and allow it to scroll it's content. If e.g. the view content is a table you should let the view fill the whole of the available area and let the parts of the table that doesn't fit be accessable by scrolling. 
