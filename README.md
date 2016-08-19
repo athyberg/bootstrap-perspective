@@ -2,7 +2,7 @@
 
 _This is a small javascript plugin that adds 'perspectives' to your Bootstrap3 desktop web application._
 
-Usually the look and feel of an average Bootstrap application tends to be more of a report than an actual desktop application (thanks to the idea of __"Mobile First"__ &ndash; design everything for smartphones and pads/tablets first and big screens as an afterthought). This responsive design concept makes it difficult to use the Bootstrap framework for e.g. back-office desktop applications where the user don't want to scroll the web page but instead scroll different parts of the application independently.
+Usually the look and feel of an average Bootstrap application tends to be more of a webpage or a report than an actual desktop application (thanks to the idea of __"Mobile First"__ &ndash; design everything for smartphones and pads/tablets first and big screens as an afterthought). This responsive design concept makes it difficult to use the Bootstrap framework for e.g. back-office desktop applications where the user don't want to scroll the web page but instead scroll different parts of the application independently.
 
 The basic idea for this plugin is that if you arrange the content of your application using an ordinary description list __`<dl><dt><dd>`__ this plugin transforms that list into a fully fledged desktop application. The transformation is done by DOM manipulation and using the CSS __Flexbox__ container to distribute the different parts of the description list and its content into a desktop application. But whenever the browser window width is below the given threshold then the application collapses into a scrollable web application suitable for smartphones and pads/tablets.
 
@@ -105,7 +105,7 @@ A good practice is to let your view widget fill up the view pane and allow it to
 There are five events that are triggered from this plugin. Remember that it is always up to the application to decide what will happen whenever these events are triggered, this plug-in does not provide any default behavior:
 
 ### view-close(event, container) ###
-Triggered when the user tries to close a view. This can be done by closing a tab or a dialog. 
+Triggered when the user tries to close a view, e.g. by closing a tab or a dialog. 
 - **event** The event.
 - **container** The container attribute is a reference to the view-container i.e. the tab or dialog. 
 
@@ -118,33 +118,42 @@ Here is an example on how to use this event:
 	    }
 	});                
 
-### view-detach ###
-Triggered whenever a user tries to detach a view from a tab slot. The container attribute is a reference to the detatched tab.
+### view-detach(event, container, top, left) ###
+Triggered whenever a user tries to detach a view from a tab slot. As for now only tabs can be detatched so the container attribute is a reference to the detatched tab.
+- **event** The event.
+- **container** The container attribute is a reference to the view-container i.e. the tab.
+- **top** The event mouse top position in pixels.
+- **left**  The event mouse left position in pixels.
+
 Here is an example on how to use this event:
  
 	$(view).on('view-detach', function( event, container, top, left ) { 
 	    container.remove();
-	    $(view).dialog().show(top, left); 
+	    $(view).asDialog(top, left); 
 	});
 
-### view-attach ###
+### view-attach(event, slotContent) ###
 Triggered whenever a user tries to attach a view (i.e. dialog) to a tab slot. 
+- **event** The event.
+- **slotContent** The given slot content.
 
-### view-resize ###
+### view-resize(event, height, width) ###
 Triggered whenever a view is resized. This is in its turn triggered by a window resize or the user resizing slots in the application. 
+- **event** The event.
+- **height** The view height in pixels.
+- **width**  The view width in pixels.
 
-### view-active ###
+### view-active(event, container) ###
 Triggered when a view becomes 'the active view', e.g. when a dialog is brought on top or whenever a tab is selected.
+- **event** The event.
+- **container** The container attribute is a reference to the view-container i.e. the tab or dialog. 
 
-### dialog-close (deprecated) ###
-Triggered when the user tries to close a dialog. Here is an example on how to use this event: 
+### layout-change(event, json) ###
+Triggered whenever the layout of the perspective has been changed, e.g. slots have been resized or tab order has been changed. 
+- **event** The event.
+- **json** A json data object containing all the perspective layout data.  
 
-	$(view).on('dialog-close', function( event, dialog ) {
-	    $(dialog).remove();
-	});
-
-### layout-change ###
-Triggered whenever the layout of the perspective has been changed, e.g. slots have been resized or tab order has been changed. Here is an example on how to use this event: 
+Here is an example on how to use this event: 
 
 	$('perspective').on('layout-change', function( event, json ) {
 	    // persist layout state
